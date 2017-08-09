@@ -1,5 +1,8 @@
 package br.edu.univas.tp4.si4.aula01;
 
+import java.io.IOException;
+import java.util.jar.JarInputStream;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,18 +16,20 @@ public class StartApp {
 		JPanel panel = new JPanel();
 		
 		
+		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		frame.setTitle("Primeira Aula de Java Swing");
-		frame.setSize(300, 300);
+		frame.setSize(800, 600);
 		frame.setVisible(true);
 		
-		button.setText("Clique aqui");
-		button.setSize(15,15);
+		button.setText("teste");
+		button.setSize(100,100);
 		button.setVisible(true);
 		
-		panel.add(button);
-		frame.add(panel);
+		frame.getContentPane().add(button, panel);
+		//panel.add(button);
+		//frame.add(panel);
 		
 		
 		
