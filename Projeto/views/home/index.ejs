@@ -1,0 +1,17 @@
+<% include ../partials/header %>
+<% include ../partials/navBar %>
+      <div class="content-wrapper">
+<% include ../partials/modalAcceptAccount %>    
+         <!-- /.container-fluid-->
+        <!-- /.content-wrapper-->
+        <h1 style="text-align:center" >Bem vindo <%= 'user' in locals ? locals.user.name : '' %></h1>
+        <%if('user' in locals && locals.user.role.toUpperCase()==='GERENTE' && 'reportsProducts' in locals){%>
+        <% include ../partials/Graphics %>
+        <a href="/edit/account" class="btn btn-primary" style="margin-bottom:10px">Editar Conta</a>
+        <%} else {%>
+        <% include ../partials/form_edit_account %>
+        <%}%>
+      </div>
+           
+<% include ../partials/footerBar %>
+<% include ../partials/footer %>          

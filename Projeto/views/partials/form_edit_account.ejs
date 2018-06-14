@@ -1,0 +1,156 @@
+<div>
+<form id="form_user" method="POST">
+<div class="form-group row">
+<label for="example-text-input" class="col-2 col-form-label">Nome</label>
+<div class="col-10">
+  <input required class="form-control" value="<%=locals.user.name%>" minlength="6" maxlength="40" name="nome" type="text" placeholder="Informe nome" id="nome">
+</div>
+</div>
+<div class="form-group row">
+     <label for="example-email-input" class="col-2 col-form-label">Email</label>
+      <div class="col-10">
+      <input required class="form-control" value="<%=locals.user.email%>" maxlength="40" placeholder="Informe email" type="text" name="email" id="email">
+      </div>
+</div>
+<div class="form-group row">
+    <label for="example-email-input" class="col-2 col-form-label">Senha</label>
+     <div class="col-10">
+     <input required class="form-control" maxlength="20" placeholder="Informe senha" type="password" name="password" id="password">
+     </div>
+</div>
+<div class="form-group row">
+    <label for="example-email-input" class="col-2 col-form-label">Confirmar senha</label>
+     <div class="col-10">
+     <input required class="form-control" maxlength="20" placeholder="Informe senha novamente" type="password" name="confirm_password" id="confirm_password">
+     <div id="message_password_diferents" style="display: none" class="alert alert-danger" role="alert">
+        <strong>Atenção!</strong> Senhas diferentes.
+    </div>
+     </div>
+</div>
+<div style="width:100%; display:flex; justify-content:center">
+    <button type="submit" form="form_user" class="btn btn-primary">Salvar</button>
+</div>
+</form>
+</div>
+<div class="modal fade" id="getting_password" tabindex="0" role="dialog" aria-labelledby="label" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="label">Aviso</h5>
+      <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group row">
+            <label for="example-email-input" class="col-12 col-form-label">É necessário senha de login para autenticação</label>
+            <div class="col-10">
+            <input required class="form-control" maxlength="20" placeholder="Informe senha" type="password" name="password_auth" id="password_auth">
+            <div id="password_login_wrong" style="display: none" class="alert alert-danger" role="alert">
+                <strong>Atenção!</strong> Senhas diferentes.
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" id="btnCheckPassword">Ok</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+    $(function(){
+        $('#btnCheckPassword').on('click', checkPassword)
+        $('#form_user').submit(submitForm)
+        function submitForm(event){
+            event.preventDefault()
+            if(validateForm()) {
+                $('#getting_password').modal('show')
+            } else {
+                return false
+            }
+        }
+
+        function checkPassword(){
+            $.ajax({
+                url:'/check/password',
+                method:'POST',
+                data: {password:$('#password_auth').val()},
+                error: function ( err ) {
+                    console.log(err)
+                    if(err.responseJSON.message === 'password wrong') {
+                        $('#password_login_wrong').show('fast')
+                        setTimeout(()=>$('#password_login_wrong').hide('slow'), 5000)
+                    } else {
+                        $.snackbar({
+                            content:'Falha ao verificar senha',
+                            timeout:3000
+                        })
+                    }
+                },
+                success: function ( res ) {
+                    const user = {
+                        name: $('#nome').val(),
+                        email: $('#email').val(),
+                        password: $('#password').val()
+                    }
+                    updateUser(user)
+                }
+
+
+            })
+        }
+
+        function validateForm(){
+            const password = $('#password').val(),
+            confirm_password = $('#confirm_password').val(),
+            email = $('#email').val(),
+            nome = $('#nome').val()
+            if(password !== confirm_password) {
+                $('#message_password_diferents').show('slow')
+                setTimeout(()=>{
+                    $('#message_password_diferents').hide('slow')
+               }, 5000)
+               return false
+            } else if(!email || !nome) {
+                $.snackbar({
+                    content:'Não é permitido campo vazio',
+                    timeout:3000,
+                    style:'toast'
+                })
+                return false
+            } 
+            else {
+                return true
+            }
+
+        }
+
+        function updateUser(user) {
+            $.ajax({
+                url:'/update/user',
+                method:'post',
+                data: user,
+                error: function ( err ) {
+                    $.snackbar({
+                        content:'Falha ao atualizar conta',
+                        timeout:3000
+                    })
+                    $('#getting_password').modal('hide')
+                },
+                success: function ( res ) {
+                    $.snackbar({
+                        content:'Conta Atualizada com sucesso',
+                        timeout: 3000,
+                        style:'toast'
+                    })
+                    $('#password').val('')
+                    $('#confirm_password').val('')
+                    $('#getting_password').modal('hide')
+                    location.reload()
+                }
+            })
+        }
+     })
+</script>

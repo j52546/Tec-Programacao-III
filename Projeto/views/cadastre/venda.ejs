@@ -1,0 +1,246 @@
+<% include ../partials/header %>
+  <% include ../partials/navBar %>
+  <link rel="stylesheet" href="/static/assets/style/home/produto.css" />
+    <div class="content-wrapper">
+      <% include ../partials/modalAcceptAccount %>
+        <!-- /.container-fluid-->
+        <!-- /.content-wrapper-->
+        <div style="margin:10px;">
+          <form id="form_venda" method="POST">
+              <input hidden class="form-control" min="0" name="nome_cliente" type="text" id="nome_cliente">
+              <input hidden class="form-control" min="0" name="saldo_produto" type="text" id="saldo_produto">
+              <input hidden class="form-control" min="0" name="nome_produto" type="text"
+                id="nome_produto">
+            <div class="form-group row">
+              <div class="col-6">
+                  <label for="example-text-input" class="col-form-label">id do cliente</label>
+                <input required class="form-control" min="0" name="id_client" type="number" placeholder="Id do cliente"
+                  id="id_client">
+                </div>
+              <div class="col-6">
+                  <label for="example-text-input" class="col-form-label">Código do produto</label>
+                <input required class="form-control" min="0" name="cod_prod" type="number" placeholder="Informe código do fornecedor"
+                  id="cod_prod">
+                </div>  
+            </div>
+
+            <div class="form-group row">
+              <div class="col-6">
+                  <label for="qtd" class="col-form-label">Quantidade</label>
+                <input min="0" required class="form-control" placeholder="informe quantidade" type="number" name="qtd" id="qtd">
+              </div>
+              <div class="col-6">
+                  <label for="valor" class="col-form-label">Valor unitário R$</label>
+                  <input disabled required class="form-control" placeholder="informe valor unitário" type="number" step="0.01" name="valor" id="valor">
+              </div>
+            </div>
+            <div class="form-group row">
+            <div class="col-12">
+                <label for="example-text-input" class="col-form-label">Descrição</label>
+              <textarea disabled rows="3" required class="form-control" min="0" name="descricao" type="text" placeholder="Descrição do produto"
+                id="descricao"></textarea>
+              </div>  
+          </div>
+            <div style="display:flex; width:100%; justify-content:space-around">
+              <button id="validateForm" type="button" class="btn btn-success">Validar formulário</button>
+              <button id="saveBtn" disabled class="btn btn-primary" form="form_venda">Salvar</button>
+              <button onclick="getAllClients()" type="button" class="btn btn-primary">Ver clientes</button>
+              <button type="button" onclick="loadingProducts()" class="btn btn-primary">Ver produtos</button>
+            </div>
+          </div>
+        </form>
+
+        <h1 style="text-align:center">Lista de venda</h1>
+        <div class="card mb-3">
+          <div class="card-header">
+            <i class="fa fa-table"></i> Venda</div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th>Código do Cliente</th>
+                    <th>Nome do cliente</th>
+                    <th>Nome do produto</th>
+                    <th>Quantidade</th>
+                    <th>Preço</th>
+                    <th>Total</th>
+                    <th>Quantidade em estoque</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="table_body">
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card-footer small text-muted">Certifique-se antes de enviar</div>
+          </div>
+          <div style="display:flex;width:100%;justify-content:center; margin-bottom:10px">
+            <button onclick="showWarning()"  class="btn btn-primary">Finalizar Venda</button>
+          </div>
+
+    </div>
+
+
+    <div class="modal fade" id="clientNotFound" tabindex="0" role="dialog" aria-labelledby="label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="label">Aviso</h5>
+              <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body alert alert-warning">Cliente não encontrado</div>
+            <div class="modal-footer">
+              <button data-dismiss="modal" id="btnHideModal" class="btn btn-primary">Ok</button>
+            </div>
+          </div>
+        </div>
+     </div>
+
+     <div class="modal fade" id="prodNotFound" tabindex="0" role="dialog" aria-labelledby="label" aria-hidden="true">
+     <div class="modal-dialog" role="document">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h5 class="modal-title" id="label">Aviso</h5>
+           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">×</span>
+           </button>
+         </div>
+         <div class="modal-body alert alert-warning">Produto não encontrado</div>
+         <div class="modal-footer">
+           <button data-dismiss="modal" id="btnHideModal" class="btn btn-primary">Ok</button>
+         </div>
+       </div>
+     </div>
+  </div>
+
+     <div class="modal fade" id="errorFind" tabindex="0" role="dialog" aria-labelledby="label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="label">Aviso</h5>
+              <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body alert alert-warning">Error no servidor, tente novamente em instantes</div>
+            <div class="modal-footer">
+              <button data-dismiss="modal" id="btnHideModal" class="btn btn-primary">Ok</button>
+            </div>
+          </div>
+        </div>
+     </div>
+
+     <div class="modal fade" id="confirmVenda" tabindex="0" role="dialog" aria-labelledby="label" aria-hidden="true">
+     <div class="modal-dialog" role="document">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h5 class="modal-title" id="label">Aviso</h5>
+           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">×</span>
+           </button>
+         </div>
+         <div class="modal-body alert alert-info">Esta venda será cadastrada.</div>
+         <div class="modal-footer">
+           <button onclick="sendVenda()" data-dismiss="modal" class="btn btn-primary">Finalizar</button>
+         </div>
+       </div>
+     </div>
+  </div>
+
+    <div class="modal fade" id="all_products" tabindex="0" role="dialog" aria-labelledby="label" aria-hidden="true">
+    <div style="min-width:100vw; margin:0px" class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="label">Items</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered" id="table_products" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Código produto</th>
+                <th>Nome produto</th>
+                <th>Quantidade</th>
+                <th>Preço</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody id="table_body">
+
+            </tbody>
+          </table>
+        </div>
+           <div class="modal-footer">
+             <button type="submit" data-dismiss="modal" class="btn btn-primary">Fechar</button>
+           </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="all_clients" tabindex="0" role="dialog" aria-labelledby="label" aria-hidden="true">
+    <div style="min-width:100vw; margin:0px" class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="label">Novo Produto</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered" id="table_clients" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Código do cliente</th>
+                <th>Nome do cliente</th>
+                <th>email</th>
+                <th>telefone</th>
+                <th>Pessoa (Física/Jurídica)</th>
+              </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+          </table>
+        </div>
+           <div class="modal-footer">
+             <button type="submit" data-dismiss="modal" class="btn btn-primary">Fechar</button>
+           </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="alertAboutProducts" tabindex="0" role="dialog" aria-labelledby="label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="label">A venda não pode prosseguir, pois os produtos a seguir estão com estoque zerado ou não tem a quantidade suficiente para a venda.</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        <div class="card" style="width: 18rem;">
+          <ul id="products_with_zero_balance" class="list-group list-group-flush">
+          </ul>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button onclick="sendVenda()" data-dismiss="modal" class="btn btn-primary">ok</button>
+        </div>
+      </div>
+    </div>
+ </div>
+
+      <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/assets/script/home/venda.js"></script>
+    <% include ../partials/footerBar %>
+      <% include ../partials/footer %>

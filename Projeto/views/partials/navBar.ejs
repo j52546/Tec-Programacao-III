@@ -1,0 +1,153 @@
+<link href='/static/assets/style/home/index.css' rel="stylesheet" />
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+  <!-- Navigation-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+        <a class="navbar-brand" href="/">Astra software</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+              <a class="nav-link" href="/">
+                <i class="fa fa-fw fa-dashboard"></i>
+                <span class="nav-link-text">Dashboard</span>
+              </a>
+            </li>
+      
+            <% if('user' in locals && (locals.user.role.toUpperCase() === 'GERENTE' || locals.user.role.toUpperCase() === 'VENDEDOR')){%>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Clientes">
+            <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseClient" data-parent="#exampleAccordion">
+              <i class="fa fa-users"></i>
+              <span class="nav-link-text">Clientes</span>
+            </a>
+            <ul class="sidenav-second-level collapse" id="collapseClient">
+              <li>
+                <a href="/create/client">Cadastrar cliente</a>
+              </li>
+              <li>
+                <a href="/list/clients">Consultar clientes</a>
+              </li>
+              <li>
+              <a href="/venda">Realizar venda</a>
+            </li>
+            </ul>
+          </li>
+            <%}%>
+          <% if('user' in locals && (locals.user.role.toUpperCase() === 'GERENTE') || (locals.user.role.toUpperCase() === 'COMPRADOR')){%>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Fornecedores">
+              <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
+                <i class="fa fa-truck"></i>
+                <span class="nav-link-text">Fornecedores</span>
+              </a>
+              <ul class="sidenav-second-level collapse" id="collapseComponents">
+                <li>
+                  <a href="/create/purveyor">Cadastrar</a>
+                </li>
+                <li>
+                  <a href="/list/purveyor">Consultar</a>
+                </li>
+                <li>
+                  <a href="/compra/produtos">Comprar produtos</a>
+                </li>
+              </ul>
+            </li>
+          <%} %>
+
+          <% if('user' in locals && (locals.user.role.toUpperCase() === 'GERENTE')){%>
+          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Relatórios">
+            <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#relatoriosComponent" data-parent="#exampleAccordion">
+              <i class="fa fa-file-pdf-o"></i>
+              <span class="nav-link-text">Relatórios</span>
+            </a>
+            <ul class="sidenav-second-level collapse" id="relatoriosComponent">
+              <li>
+                <a href="/reports/employee">Funcionários</a>
+              </li>
+              <li>
+                <a href="/reports/products">Produtos mais vendidos</a>
+              </li>
+              </ul>
+          </li>
+        <%} %>
+          <% if('user' in locals && (locals.user.role.toUpperCase() === 'GERENTE') || (locals.user.role.toUpperCase() === 'FINANCEIRO')){%>
+          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Vendas/Compras">
+            <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#financeiro_collapse" data-parent="#exampleAccordion">
+              <i class="fa fa-folder-open"></i>
+              <span class="nav-link-text">Vendas/Compras</span>
+            </a>
+            <ul class="sidenav-second-level collapse" id="financeiro_collapse">
+              <li>
+                <a href="/approve/sales">Aprovação de vendas</a>
+              </li>
+              <li>
+                <a href="/approve/purchases">Aprovação de compras</a>
+              </li>
+            </ul>
+          </li>
+        <%} %>
+
+        <% if('user' in locals && (locals.user.role.toUpperCase() === 'GERENTE') || (locals.user.role.toUpperCase() === 'ESTOQUE')){%>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Estoque">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#estoque_collapse" data-parent="#exampleAccordion">
+            <i class="fa fa-archive" aria-hidden="true"></i>
+            <span class="nav-link-text">Estoque</span>
+          </a>
+          <ul class="sidenav-second-level collapse" id="estoque_collapse">
+            <li>
+              <a href="/list/products">Produtos</a>
+            </li>
+            <li>
+              <a href="/list/entrance/exit">Entrada/saída</a>
+            </li>
+          </ul>
+        </li>
+      <%} %>
+
+
+          </ul>
+          <ul class="navbar-nav sidenav-toggler">
+            <li id="closeOptions" class="nav-item">
+              <a class="nav-link text-center" id="sidenavToggler">
+                <i class="fa fa-fw fa-angle-left"></i>
+              </a>
+            </li>
+          </ul>
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-fw fa-bell"></i>
+                <span class="d-lg-none">Alerts
+                  <% if('users' in locals && locals.users.length > 0) {%>
+                    <span class="badge badge-pill badge-warning"><%= locals.users.length %></span>
+                  <%} %>
+                </span>
+                <% if('users' in locals && locals.users.length > 0){%>
+                  <span class="indicator text-warning d-none d-lg-block">
+                    <span class="badge badge-warning" style="font-size:1em"><%= locals.users.length %></span>
+                  </span>
+                <%}%>
+              </a>
+              <div style="left:-125px" class="dropdown-menu" aria-labelledby="alertsDropdown">
+                <h6 class="dropdown-header">Registros</h6>
+                <% if('users' in locals && locals.users.length > 0){ %>
+                  <% locals.users.map(content => { %>
+                    <div class="dropdown-divider"></div>
+                    <button onclick="openModal(<%=content.COD%>)"  data-toogle="modal" data-target="#<%=content.COD%>" class="dropdown-item">
+                      <span class="text-success">
+                        <strong>
+                          <i class="fa fa-long-arrow-up fa-fw"></i><%=content.NOME %></strong>
+                      </span>
+                    <div class="dropdown-message small">Este usuário solicitou cadastrado no sistema</div>
+                    </button>
+                  <%}) %>
+                <%} %>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+                <i class="fa fa-fw fa-sign-out"></i>Sair</a>
+            </li>
+          </ul>
+        </div>
+      </nav>

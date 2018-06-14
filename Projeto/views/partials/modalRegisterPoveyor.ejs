@@ -1,0 +1,114 @@
+<% if('users' in locals && locals.users.length > 0){ %>
+<% locals.users.map(content => { %>
+    <div class="modal fade" id="<%=content.COD%>" tabindex="0" role="dialog" aria-labelledby="label" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="label">Aprovar?</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">Qual papel <%=content.NOME%> vai ter?</div>
+          <div class="form-group margin_form">
+              <label for="exampleSelect1">Example select</label>
+              <select class="form-control" id="<%= content.DOCIND%>">
+                <option>Estoque</option>
+                <option>Financeiro</option>
+                <option>Vendedor</option>
+                <option>Comprador</option>
+              </select>
+            </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            <button onclick="updateAccount(<%=JSON.stringify(content)%>)" class="btn btn-primary">Ok</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<%}) %>
+<%} %>
+
+
+<%if('purveyorAlreadyExist' in locals && locals.purveyorAlreadyExist){%>
+<div class="modal fade" id="purveyorAlreadyExist" tabindex="0" role="dialog" aria-labelledby="label" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="label">Aviso</h5>
+      <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">Fornecedor já está cadastrado</div>
+    <div class="modal-footer">
+      <button data-dismiss="modal" id="btnHideModal" class="btn btn-primary">Ok</button>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+  $(function(){
+      $('#purveyorAlreadyExist').modal('show')
+      setTimeout(()=>{
+        $('#btnHideModal').trigger('click')
+      }, 10000)
+  })
+</script>
+<%}%>
+
+<%if('errorSavePurveyor' in locals && locals.errorSavePurveyor){%>
+<div class="modal fade" id="errorSavePurveyor" tabindex="0" role="dialog" aria-labelledby="label" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="label">Aviso</h5>
+      <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">Erro ao salvar fornecedor</div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" id="btnHideModalError" data-dismiss="modal">Ok</button>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+  $(function(){
+    $('#errorSavePurveyor').modal('show')
+  setTimeout(()=>{
+    $('#btnHideModalError').trigger('click')
+  }, 10000)
+  })
+</script>
+<%}%>
+
+
+<%if('successRegisterPurveyor' in locals && locals.successRegisterPurveyor){%>
+<div class="modal fade" id="successRegisterPurveyor" tabindex="0" role="dialog" aria-labelledby="label" aria-hidden="true">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="label">Aviso</h5>
+      <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body" style="color:#31B006">Fornecedor salvo com sucesso</div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" id="btnHideModalSucess" data-dismiss="modal">Ok</button>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+  $(function(){
+    $('#successRegisterPurveyor').modal('show')
+  setTimeout(()=>{
+    $('#btnHideModalSucess').trigger('click')
+  }, 10000)
+  })
+</script>
+<%}%>

@@ -1,0 +1,50 @@
+<% include ../partials/header %>
+<% include ../partials/navBar %>
+      <div class="content-wrapper">
+<% include ../partials/modalAcceptAccount %>
+         <!-- /.container-fluid-->
+        <!-- /.content-wrapper-->
+        <h1 style="text-align:center">Lista de Produtos</h1>
+        <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-table"></i> Produtos</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Nome</th>
+                  <th>Descrição</th>
+                  <th>Saldo</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                    <th>Código</th>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Saldo</th>
+                </tr>
+              </tfoot>
+              <tbody>
+              <% if(products.length > 0){%>
+                  <% products.map(content => {%>
+                    <tr>
+                      <td><%= content.COD %></td>
+                      <td><%= content.NOME %></td>
+                      <td><%= content.DESCR %></td>
+                      <td><%= content.SALDO %></td>
+                    </tr>
+                  <%})%>
+                <%}%>               
+            </tbody>
+            </table>
+          </div>
+        </div>
+    </div>
+
+      </div>
+<script src="/static/vendor/jquery/jquery.min.js"></script>     
+<% include ../partials/footerBar %>
+<% include ../partials/footer %>

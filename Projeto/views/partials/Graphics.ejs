@@ -1,0 +1,119 @@
+<div style="display:flex; justify-content:space-around">
+<div style="width:50%">
+    <canvas id="myChart"></canvas>
+</div>
+<%if('productPrice' in locals){%>
+<div style="width:50%">
+    <canvas id="myChartLine"></canvas>
+</div>
+<%}%>
+</div>
+<%if('clientsWhoSpentMost' in locals){%>
+<div style="width:100%; margin-top:20px; margin-bottom:10px; display:flex;flex-direction:column;align-items:center;">
+<h3>Cliente que mais gastou</h3>
+<div style="width:60%">
+    <canvas id="myChartCircle"></canvas>
+</div>
+</div>
+<%}%>
+<script>
+const names = new Array()
+<% locals.reportsProducts.map(content=>{%>
+    names.push('<%=content.nome.split(' ')[0]%>')
+<%}) %>
+$(function(){
+      var ctx = document.getElementById("myChart").getContext('2d');
+var myChart = new Chart(ctx, {
+type: 'bar',
+data: {
+    labels:names ,
+    datasets: [{
+        label: '5 produtos mais vendidos',
+        data: [<%= locals.reportsProducts.map(v=>v.quantidade) %>],
+        backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+            'rgba(255,99,132,1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+    }]
+},
+options: {
+    scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero:true
+            }
+        }]
+    }
+}
+});
+<%if('productPrice' in locals){%>
+const labels = new Array()
+<%locals.productPrice.map(content=>{%>
+    labels.push('<%=content.nome.split(' ')[0]%>')
+<%})%>
+const canvasLine = document.getElementById('myChartLine').getContext('2d')
+const myLineChart = new Chart(canvasLine, {
+    type: 'line',
+    data: {
+        labels,
+        datasets: [{
+            label: '5 produtos com maior rendimento',
+            data: [<%=locals.productPrice.map(v=>v.renda_final.toFixed(2))%>],
+            backgroundColor:['rgba(54, 162, 235, 0.2)'],
+            borderColor:['rgba(54, 162, 235, 1)']
+        }],
+    }
+ });
+<%}%>
+
+
+ <%if('clientsWhoSpentMost' in locals){%>
+    const labelsCircle = new Array()
+    <%locals.clientsWhoSpentMost.map(content=>{%>
+     labelsCircle.push('<%=content.NOME%>')
+    <%})%>
+    const canvasCircle = document.getElementById('myChartCircle').getContext('2d')
+    const myCircleChart = new Chart(canvasCircle, {
+        type: 'pie',
+        data: {
+            labels:labelsCircle,
+            datasets: [{
+                label: '5 produtos com maior rendimento',
+                data: [<%=locals.clientsWhoSpentMost.map(v=>v.valor.toFixed(2))%>],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+            }],
+        }
+     });
+ <%}%>
+
+
+})
+</script>

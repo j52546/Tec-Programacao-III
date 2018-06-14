@@ -1,0 +1,55 @@
+<% include ../partials/header %>
+<% include ../partials/navBar %>
+      <div class="content-wrapper">
+<% include ../partials/modalRegisterPoveyor %>
+         <!-- /.container-fluid-->
+        <!-- /.content-wrapper-->
+        <h1 style="text-align:center">Lista de Fornecedor</h1>
+        <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-table"></i> Fornecedores</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Telefone</th>
+                  <th>Cidade</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th>Código</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Telefone</th>
+                  <th>Cidade</th>
+                </tr>
+              </tfoot>
+              <tbody>
+              <% if('purveyors' in locals && locals.purveyors.length > 0){%>
+                  <% locals.purveyors.map(content => {%>
+                    <tr>
+                      <td><%= content.COD %></td>
+                      <td><%= content.NOME %></td>
+                      <td><%= content.EMAIL %></td>
+                      <td><%= content.TEL %></td>
+                      <td><%= content.CIDADE %></td>
+                    </tr>
+                  <%})%>
+                <%}%>               
+            </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer small text-muted"></div>
+        </div>
+
+      </div>
+<script src="/static/vendor/jquery/jquery.min.js"></script>     
+<script src="/static/assets/script/home/fornecedor.js"></script>
+<% include ../partials/footerBar %>
+<% include ../partials/footer %>

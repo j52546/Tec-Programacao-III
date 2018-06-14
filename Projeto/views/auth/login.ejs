@@ -1,0 +1,66 @@
+<% include ../partials/header %>
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+<link href="/static/assets/style/login/login.css" rel="stylesheet" />
+  <div class="container">
+    <div class="card card-login mx-auto mt-5">
+      <div class="card-header">Login</div>
+      <div class="card-body">
+        <form action="/login" id="form_login" method="POST">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email</label>
+            <input name="email" required class="form-control" id="exampleInputEmail1" type="email" aria-describedby="emailHelp" placeholder="Informe email">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">Senha</label>
+            <input name="password" required class="form-control" id="exampleInputPassword1" type="password" placeholder="Informe senha">
+          </div>
+          <button type="submit" form="form_login" class="btn btn-primary btn-block">Entrar</button>
+        </form>
+        <div class="text-center">
+          <a class="d-block small mt-3" href="/register">Crie uma conta</a>
+          <a class="d-block small" href="/recuperar-senha">Esqueceu senha?</a>
+        </div>
+      </div>
+      <% if('successToCreateAccount' in locals) {%>
+        <div class="alert alert-primary" id="successCreateAccount" role="alert">
+          Aguarde que seu cadastro seja aprovado.
+        </div>
+
+        <script>
+          setTimeout(() => {
+            $('#successCreateAccount').hide(500)
+          }, 5000)
+        </script> 
+      <%}%>
+      <div class="alert alert-danger hideErrorMessage" id="errorToLogin" role="alert">
+        Email/senha incorretos.
+      </div>
+
+      <div class="alert alert-danger hideErrorMessage" id="notAuthorizated" role="alert">
+          Seu cadastro ainda não foi aprovado
+      </div>
+      <% if('error' in locals) {%>
+        <script>
+          $('#errorToLogin').show(500)
+          setTimeout(() => {
+            $('#errorToLogin').hide(500)
+          }, 5000)
+        </script> 
+      <%}%>
+
+      <% if('notAuthorizated' in locals && locals.notAuthorizated) { %>
+        <script>
+         $('#notAuthorizated').show(500)
+          setTimeout(() => {
+            $('#notAuthorizated').hide(500)
+            setTimeout(()=>{
+              window.location.href="/login"
+            }, 500)
+          }, 5000)
+        </script>
+      <%}%>
+
+    </div>
+  </div>
+  <script src="/static/assets/script/login/login.js"></script>
+<% include ../partials/footer %>

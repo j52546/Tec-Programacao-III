@@ -1,0 +1,30 @@
+html {
+    width: 100%;
+    height: 100%;
+    background-image: url('../images/404-error.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    overflow: hidden;
+}
+body {
+    width: 100%;
+    height: 100%;
+}
+.title_not_found{
+    color:#FFF;
+    font-family: Arial, Helvetica, sans-serif
+}
+.card_flex{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center
+}
+h1, h2 {
+    -webkit-margin-before: 0px;
+    -webkit-margin-after: 15px;
+    margin-left: 30px;
+}

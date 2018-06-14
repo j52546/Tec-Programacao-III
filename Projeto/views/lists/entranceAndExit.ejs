@@ -1,0 +1,45 @@
+<% include ../partials/header %>
+<% include ../partials/navBar %>
+    <link rel="stylesheet" href="/static/assets/style/home/entranceAndExit.css" />
+    <div class="content-wrapper">
+<% include ../partials/modalAcceptAccount %>
+<div class="btn-group centerbtns" role="group" aria-label="Basic example">
+    <button onclick="getEntrance()" type="button" class="btn btn-outline-success btn-width20">Entrada</button>
+    <button onclick="getExit()" type="button" class="btn btn-outline-danger btn-width20">Saída</button>  
+</div>
+<h2 id="titlePage" class="myTitle">Entrada</h2>
+<div class="card mb-3">
+    <div class="card-header">
+      <i class="fa fa-table"></i> Produtos</div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Nome</th>
+              <th>Quantidade</th>
+              <th>Saldo</th>
+            </tr>
+          </thead>
+          <tfoot>
+            <tr>
+            <th>Código</th>
+            <th>Nome</th>
+            <th>Quantidade</th>
+            <th>Saldo</th>
+            </tr>
+          </tfoot>
+          <tbody>
+              
+        </tbody>
+        </table>
+      </div>
+    </div>
+    </div>
+    </div>
+
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+<script src="/static/assets/script/home/entranceAndExit.js"></script>     
+<% include ../partials/footerBar %>
+<% include ../partials/footer %>

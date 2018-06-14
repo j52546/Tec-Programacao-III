@@ -1,0 +1,227 @@
+<% include ../partials/header %>
+  <% include ../partials/navBar %>
+  <link rel="stylesheet" href="/static/assets/style/home/produto.css" />
+    <div class="content-wrapper">
+      <% include ../partials/modalAcceptAccount %>
+        <!-- /.container-fluid-->
+        <!-- /.content-wrapper-->
+        <div style="margin:10px;">
+          <form id="form_product" method="POST">
+              <input hidden class="form-control" min="0" name="nome_produto" type="text" id="nome_produto">
+
+              <input hidden class="form-control" min="0" name="nome_fornec" type="text"
+                id="nome_fornec">
+            <div class="form-group row">
+              <div class="col-6">
+                  <label for="example-text-input" class="col-form-label">id do produto</label>
+                <input required class="form-control" min="0" name="id_produto" type="text" placeholder="Id do produto"
+                  id="id_produto">
+                </div>
+              <div class="col-6">
+                  <label for="example-text-input" class="col-form-label">Código do fornecedor</label>
+                <input required class="form-control" min="0" name="cod_fornec" type="number" placeholder="Informe código do fornecedor"
+                  id="cod_fornec">
+                </div>  
+            </div>
+
+            <div class="form-group row">
+              <div class="col-6">
+                  <label for="qtd" class="col-form-label">Quantidade</label>
+                <input min="0" required class="form-control" placeholder="informe quantidade" type="number" name="qtd" id="qtd">
+              </div>
+              <div class="col-6">
+                  <label for="valor" class="col-form-label">Valor unitário R$</label>
+                  <input disabled required class="form-control" placeholder="informe valor unitário" type="number" step="0.01" name="valor" id="valor">
+              </div>
+            </div>
+            <div class="form-group row">
+            <div class="col-12">
+                <label for="example-text-input" class="col-form-label">Descrição</label>
+              <textarea disabled rows="3" required class="form-control" min="0" name="descricao" type="text" placeholder="Descrição do produto"
+                id="descricao"></textarea>
+              </div>  
+          </div>
+            <div style="display:flex; width:100%; justify-content:space-around">
+              <button id="validateForm" type="button" class="btn btn-success">Validar formulário</button>
+              <button id="saveBtn" disabled class="btn btn-primary" form="form_product">Salvar</button>
+              <button type="button" id="btnNovoProduto" class="btn btn-primary">Cadastrar produto</button>
+              <button type="button" onclick="loadingProducts()" class="btn btn-primary">Ver produtos</button>
+            </div>
+          </div>
+        </form>
+
+        <h1 style="text-align:center">Lista de compra</h1>
+        <div class="card mb-3">
+          <div class="card-header">
+            <i class="fa fa-table"></i> Compra</div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th>Código do fornecedor</th>
+                    <th>Nome fornec</th>
+                    <th>Nome do produto</th>
+                    <th>Quantidade</th>
+                    <th>Preço</th>
+                    <th>Total</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="table_body">
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card-footer small text-muted">Certifique-se antes de enviar</div>
+          </div>
+          <div style="display:flex;width:100%;justify-content:center; margin-bottom:10px">
+            <button onclick="showWarning()"  class="btn btn-primary">Finalizar Pedido</button>
+          </div>
+
+    </div>
+
+
+    <div class="modal fade" id="purveyorNotFound" tabindex="0" role="dialog" aria-labelledby="label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="label">Aviso</h5>
+              <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body alert alert-warning">Fornecedor não encontrado</div>
+            <div class="modal-footer">
+              <button data-dismiss="modal" id="btnHideModal" class="btn btn-primary">Ok</button>
+            </div>
+          </div>
+        </div>
+     </div>
+
+     <div class="modal fade" id="prodNotFound" tabindex="0" role="dialog" aria-labelledby="label" aria-hidden="true">
+     <div class="modal-dialog" role="document">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h5 class="modal-title" id="label">Aviso</h5>
+           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">×</span>
+           </button>
+         </div>
+         <div class="modal-body alert alert-warning">Produto não encontrado</div>
+         <div class="modal-footer">
+           <button data-dismiss="modal" id="btnHideModal" class="btn btn-primary">Ok</button>
+         </div>
+       </div>
+     </div>
+  </div>
+
+     <div class="modal fade" id="errorFind" tabindex="0" role="dialog" aria-labelledby="label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="label">Aviso</h5>
+              <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body alert alert-warning">Error no servidor, tente novamente em instantes</div>
+            <div class="modal-footer">
+              <button data-dismiss="modal" id="btnHideModal" class="btn btn-primary">Ok</button>
+            </div>
+          </div>
+        </div>
+     </div>
+
+     <div class="modal fade" id="confirmPedido" tabindex="0" role="dialog" aria-labelledby="label" aria-hidden="true">
+     <div class="modal-dialog" role="document">
+       <div class="modal-content">
+         <div class="modal-header">
+           <h5 class="modal-title" id="label">Aviso</h5>
+           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+             <span aria-hidden="true">×</span>
+           </button>
+         </div>
+         <div class="modal-body alert alert-info">O pedido de compra será criado</div>
+         <div class="modal-footer">
+           <button onclick="sendPedido()" data-dismiss="modal" class="btn btn-primary">Finalizar</button>
+         </div>
+       </div>
+     </div>
+  </div>
+
+  <div class="modal fade" id="modal_novo_produto" tabindex="0" role="dialog" aria-labelledby="label" aria-hidden="true">
+    <div style="min-width:50vw" class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="label">Novo Produto</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="form_novo_produto" method="POST">
+              <div class="form-group row">
+                <div class="col-6">
+                    <label for="nome_novo_produto" class="col-form-label">Nome do produto</label>
+                  <input required class="form-control" maxlength="100" minlength="3" name="nome_novo_produto" type="text" placeholder="Nome do produto"
+                    id="nome_novo_produto">
+                  </div>
+                <div class="col-6">
+                      <label for="preco_produto" class="col-form-label">Informe preço</label>
+                    <input required class="form-control" step="0.01" name="preco_produto" type="number" placeholder="Informe preço do produto"
+                      id="preco_produto">
+                    </div>  
+                    <div class="col-12">
+                       <label for="descricao_produto" class="col-form-label">Código do fornecedor</label>
+                     <textarea required class="form-control" maxlength="250" rows="3" name="descricao_produto" type="text" placeholder="Descrição do produto"
+                       id="descricao_produto"></textarea>
+                    </div>  
+                 </div>
+            </form>
+           </div>
+           <div class="modal-footer">
+             <button type="submit" form="form_novo_produto" class="btn btn-primary">Finalizar</button>
+           </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="all_products" tabindex="0" role="dialog" aria-labelledby="label" aria-hidden="true">
+    <div style="min-width:100vw; margin:0px" class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="label">Novo Produto</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <table class="table table-bordered" id="table_products" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Código produto</th>
+                <th>Nome produto</th>
+                <th>Quantidade</th>
+                <th>Preço</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody id="table_body">
+
+            </tbody>
+          </table>
+        </div>
+           <div class="modal-footer">
+             <button type="submit" data-dismiss="modal" class="btn btn-primary">Fechar</button>
+           </div>
+        </div>
+      </div>
+    </div>
+
+      <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/assets/script/home/produto.js"></script>
+    <% include ../partials/footerBar %>
+      <% include ../partials/footer %>

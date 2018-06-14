@@ -1,0 +1,54 @@
+<% include ../partials/header %>
+<% include ../partials/navBar %>
+      <div class="content-wrapper">
+<% include ../partials/modalAcceptAccount %>
+         <!-- /.container-fluid-->
+        <!-- /.content-wrapper-->
+        <h1 style="text-align:center">Lista de funcionários</h1>
+        <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-table"></i> Funcionários</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Documento</th>
+                  <th>Telefone</th>
+                  <th>Email</th>
+                  <th>Função</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                    <th>Nome</th>
+                    <th>Documento</th>
+                    <th>Telefone</th>
+                    <th>Email</th>
+                    <th>Função</th>
+                </tr>
+              </tfoot>
+              <tbody>
+              <% if(employees.length > 0){%>
+                  <% employees.map(content => {%>
+                    <tr>
+                      <td><%= content.NOME %></td>
+                      <td><%= content.DOCIND %></td>
+                      <td><%= content.TEL %></td>
+                      <td><%= content.EMAIL %></td>
+                      <td><%= content.ROLE %></td>
+                    </tr>
+                  <%})%>
+                <%}%>               
+            </tbody>
+            </table>
+          </div>
+        </div>
+    </div>
+    <a class="btn btn-danger" style="margin-bottom:10px" href="javascript:downloadPDFEmployee()">Download PDF</a>
+      </div>
+<script src="/static/vendor/jquery/jquery.min.js"></script>   
+<script src="/static/assets/script/home/reports.js"></script>     
+<% include ../partials/footerBar %>
+<% include ../partials/footer %>

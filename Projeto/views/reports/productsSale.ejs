@@ -1,0 +1,63 @@
+<% include ../partials/header %>
+<% include ../partials/navBar %>
+      <div class="content-wrapper">
+<% include ../partials/modalAcceptAccount %>
+         <!-- /.container-fluid-->
+        <!-- /.content-wrapper-->
+        <h1 style="text-align:center">Lista de produtos mais vendidos</h1>
+        <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-table"></i> Produtos</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Nome</th>
+                  <th>Descrição</th>
+                  <th>Preço de compra</th>
+                  <th>Preço de venda</th>
+                  <th>Saldo</th>
+                  <th>Quantidade</th>
+                  <th>Renda total</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                    <th>Código</th>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Preço de compra</th>
+                    <th>Preço de venda</th>
+                    <th>Saldo</th>
+                    <th>Quantidade</th>
+                    <th>Renda total</th>
+                </tr>
+              </tfoot>
+              <tbody>
+              <% if(products.length > 0){%>
+                  <% products.map(content => {%>
+                    <tr>
+                      <td><%= content.codigo %></td>
+                      <td><%= content.nome %></td>
+                      <td><%= content.descricao %></td>
+                      <td><%= content.preco.toFixed(2) %></td>
+                      <td><%= content.preco_venda.toFixed(2) %></td>
+                      <td><%= content.saldo %></td>
+                      <td><%= content.quantidade %></td>
+                      <td><%= content.renda_final.toFixed(2) %></td>
+                    </tr>
+                  <%})%>
+                <%}%>               
+            </tbody>
+            </table>
+          </div>
+        </div>
+    </div>
+    <button onclick="productsPDF()" style="margin-bottom:10px" class="btn btn-danger">Download PDF</button>
+      </div>
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+<script src="/static/assets/script/home/reports.js"></script>     
+<% include ../partials/footerBar %>
+<% include ../partials/footer %>

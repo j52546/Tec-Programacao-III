@@ -1,0 +1,127 @@
+<% include ../partials/header %>
+  <% include ../partials/navBar %>
+    <div class="content-wrapper">
+      <% include ../partials/modalAcceptAccount %>
+      <div>
+      <h2 style="text-align:center; margin-bottom:15px;">Lista de compras para aprovação</h2>
+      <table class="table table-bordered" id="dataTableClin" width="100%" cellspacing="0">
+      <thead>
+        <tr>
+          <th hidden>ID_COMPRA</th>
+          <th>Data de vencimento</th>
+          <th>Nome do fornecedor</th>
+          <th>Total de itens</th>
+          <th>Valor do pedido</th>
+          <th>Ações</th>
+          <th hidden>ID</th>
+        </tr>
+      </thead>
+      <tbody id="table_body">
+        <% if(purchases.length > 0){%>
+          <%purchases.map(content=>{%>
+            <tr>
+              <th hidden><%= content.ID %></th>
+              <td><%= content.data_vencimento.getDate() +'/'+ (content.data_vencimento.getMonth()+1) +'/'+content.data_vencimento.getFullYear() %></td>
+              <td><%= content.nome_fornecedor %></td>
+              <td><%= content.total_ped %></td>
+              <td><%= content.valor.toFixed(2) %></td>
+              <td>
+                <button onclick="moreInformation(this)" data-toggle="tooltip" data-placement="top" title="Visualizar pedido" class="btn btn-primary btnInformation">
+                  <i class="fa fa-plus" aria-hidden="true"></i> 
+                </button>
+                <button onclick="approveSale(this)" class="btn btn-success">Aprovar</button>
+                <button onclick="reproveSale(this)" class="btn btn-danger" >Reprovar</button>  
+              </td>
+              <td hidden><%= content.COD %></td>
+            </tr>
+          <%})%>
+        <%}%>
+      </tbody>
+    </table>      
+      </div>
+
+
+      <div class="modal fade" id="all_items" tabindex="0" role="dialog" aria-labelledby="label" aria-hidden="true">
+      <div style="min-width:100vw; margin:0px" class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="label">Novo Produto</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              <table class="table table-bordered" id="table_items" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Código produto</th>
+                  <th>Nome produto</th>
+                  <th>Preço</th>
+                  <th>Quantidade pedida</th>
+                  <th>Descrição</th>
+                  <th>Saldo no estoque</th>
+                </tr>
+              </thead>
+              <tbody id="table_body">
+  
+              </tbody>
+            </table>
+          </div>
+             <div class="modal-footer">
+               <button type="submit" data-dismiss="modal" class="btn btn-primary">Fechar</button>
+             </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="alert_reprove" tabindex="0" role="dialog" aria-labelledby="label" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="label">Compra</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger">
+                <h4>Atenção, a compra será reprovada.</h4>
+            </div>
+          </div>
+             <div class="modal-footer">
+               <button onclick="reprovedItem()" type="submit" data-dismiss="modal" class="btn btn-danger">Ok, reprovar</button>
+             </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="alert_approve" tabindex="0" role="dialog" aria-labelledby="label" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="label">Compra</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-success">
+                <h4>Atenção, a compra será aprovada.</h4>
+            </div>
+          </div>
+             <div class="modal-footer">
+               <button onclick="approveItem()" type="submit" data-dismiss="modal" class="btn btn-success">Ok, aprovar</button>
+             </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+    </div>
+    </div>
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/assets/script/home/purchases.js"></script>
+    <% include ../partials/footerBar %>
+      <% include ../partials/footer %>

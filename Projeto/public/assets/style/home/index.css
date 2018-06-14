@@ -1,0 +1,41 @@
+html {
+    overflow-y: hidden;
+}
+.content-wrapper {
+    padding-top:4rem;
+    padding-left:10px;
+    height:92vh
+}
+
+.margin_form {
+    margin:1rem !important
+}
+.sticky-footer {
+    height: 8vh;
+    font-size:1.5em    
+}
+.hideDiv{
+    display: none
+}
+.navbar-dark .navbar-collapse .navbar-sidenav {
+    overflow: auto;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}   
